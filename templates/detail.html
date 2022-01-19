@@ -1,0 +1,114 @@
+{% extends 'base03.html' %}
+{% block title %}文章详情{% endblock %}
+​
+{% block page_content %}
+
+<script>
+    function delete_click(button, id) {
+        if (button.className == "btn btn btn-warning") {
+            button.innerHTML = "已删除！"
+            button.className = "btn btn btn-success"
+            setTimeout(function(){window.open("{{ url_for('delete', article_id=id) }}" + id,"_self")}, 200)
+        } else {
+            if (button.className == "btn btn btn-danger") {
+                button.innerHTML = "确定吗？"
+                button.className = "btn btn btn-warning"
+            }
+        }
+    }
+    function delete_click_comment(button, id) {
+        if (button.className == "btn btn-sm btn-warning") {
+            button.innerHTML = "已删除！"
+            button.className = "btn btn-sm btn-success"
+            setTimeout(function(){window.open("{{ url_for('delete_comment', comment_id=id) }}" + id,"_self")}, 200)
+        } else {
+            if (button.className == "btn btn-sm btn-danger") {
+                button.innerHTML = "确定吗？"
+                button.className = "btn btn-sm btn-warning"
+            }
+        }
+    }
+    function delete_out(button, size, text) {
+        button.innerHTML = text
+        button.className = "btn btn" + size + " btn-danger"
+    }
+</script>
+
+<ul class="posts">
+    <h3 class="page-title" align="center" >标题：<strong>{{ article.title }}</strong></h3>
+    <p align="center">
+        <span>作者：{{ article.author.username }}</span>
+        <span>时间：{{ article.create_time.strftime('%Y/%m/%d %H:%M:%S') }}</span>
+    </p>
+    <hr>
+        <br>
+        <p class="article-content">
+            {{ article.content|striptags|replace("__N__", "<br>")|replace("__S__", "&nbsp;")|safe }}
+        </p>
+        <br><br><br>
+        {% if um.username == article.author.username %}
+            <button class="btn btn btn-danger"
+                    style="float:right;position:relative;top:-20px;" type="button"
+                    onclick="delete_click(this, {{ article.id }}, '')"
+                    onmouseout="delete_out(this, '', '删除文章')">
+                删除文章
+            </button>
+        {% endif %}
+    <hr>
+    <h3>{{ tip }}</h3>
+    <form action="{{ url_for('comment') }}" method="post">
+        <div class="form-group">
+            <textarea name="comment_content" placeholder="请填写评论"
+                      rows="3" cols="50" class="form-control" style="resize: none;"></textarea>
+            <input type="hidden" name="article_id" value="{{ article.id }}">
+        </div>
+        <div class="form-group" style="text-align: right;">
+            <button class="btn btn-primary">立即评论</button>
+        </div>
+    </form>
+</ul>
+<ul class="comments">
+    {% for comment in article.comments[::-1] %}
+    <li class="comment">
+        <div class="comment-thumbnail">
+            <img style="width:40px;height:40px;border-radius:20px;"
+                 src="{{ url_for('static',filename='code.jpg') }}"
+                 class="avatar">
+            <p style="color:#999999">&nbsp;{{ loop.revindex }}楼</p>
+        </div>
+        <div class="comment-content">
+            <div class="comment-date"><big>{{ comment.create_time.strftime('%Y/%m/%d %H:%M:%S') }}</big></div>
+            <div class="comment-author">
+                <a href="{{ url_for('user_detail', user_id=comment.author_id) }}">
+                {% if um %}
+                    {% if article.author.username == '韩天浩' or article.author.username == 'test1' or article.author.username == 'Ceptionday' %}
+                        (管理员)
+                    {% endif %}
+                {% endif %}
+                    {{ comment.author.username[0:65] }}{% if article.author.username[65] %}......{% endif %}:
+                </a>
+            </div>
+            <div class="comment-body">
+                {{ comment.content[0:500]|striptags|replace("__N__", "<br>")|replace("__S__", "&nbsp;")|safe }}
+                {% if comment.content|replace("__N__", "")|replace("__S__", "S")|length > 500 %}
+                        <b style="color:#000088">......已省略更多(
+                            {{ comment.content|replace("__N__", "")|replace("__S__", "S")|length }}/500
+                            )</b>
+                        <p>全部显示</p>
+                {% endif %}
+            </div>
+            {% if um.id == comment.author_id %}
+                <br>
+                <button class="btn btn-sm btn-danger"
+                        style="float:right;position:relative;top:-20px;" type="button"
+                        onclick="delete_click_comment(this, {{ comment.id }})"
+                        onmouseout="delete_out(this, '-sm', '删除')">
+                    删除
+                </button>
+                <br>
+            {% endif %}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

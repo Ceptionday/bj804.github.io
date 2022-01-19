@@ -1,0 +1,77 @@
+{% extends "base04.html" %}
+​
+{% block title %}个人资料 - {{ user.username }}{% endblock %}
+​
+{% block page_content %}
+<div class="page-header">
+    <img class="img-rounded profile-thumbnail" src="{{ url_for('static',filename='code200.jpg') }}">
+    <div class="profile-header" style="font-size:16px;">
+        {% if user.username %}
+        用户名：<b style="color:{{ colors }}">{{ user.username }}</b>
+        <br>
+        {% if user.address %}
+                地址：
+                <b><a href="http://map.baidu.com/?newmap=1&ie=utf-8&s=s%26wd%3D{{ user.address }}" target="_blank">
+                    {{ user.address}}
+                </a></b>
+            {% else %}
+                地址:<b style="color:gray;">未填写</b>
+            {% endif %}
+            <br>
+            {% if user.info %}
+                文章数量：<b>{{ articles|length }}</b>
+            {% else %}
+                文章数量：<b style="color:gray;">0</b>
+            {% endif %}
+            <br>
+            {% if user.info %}
+                个人介绍：<b>{{ user.info|striptags|replace("__N__", "<br>")|replace("__S__", "&nbsp;")|safe  }}</b>
+            {% else %}
+                个人介绍:这个人似乎还没写个人介绍
+            {% endif %}
+        {% endif %}
+        </p>
+        <p>
+            {% if um.id == user.id %}
+                <a class="btn btn-default" href="{{ url_for('edit_info',user_id=user.id) }}">编辑个人信息</a>
+                <br>
+            {% endif %}
+        </p>
+    </div>
+</div>
+<h3 style="color:#666666;">Posts by <b><span style="color:{{ colors }}">{{ user.username }}</span></b></h3>
+<ul class="posts">
+    {% if articles %}
+        {% for article in articles %}
+        <li class="post">
+            <div class="thumbnail" style="width:50px; height:50px;">
+                <img src="{{ url_for('static',filename='code200.jpg') }}">
+            </div>
+            <b style="font-size:15px;position:relative;left:55px;top:-60px; color:{{ colors }}">
+                {{ article.author.username[0:65] }}{% if article.author.username[65] %}......{% endif %}：
+            </b>
+            <div>
+                <p style="font-size:20px;color:#0088FF;position:relative;top:-35px;"><b>
+                    {% if um %}
+                        <a href="{{ url_for('detail', article_id=article.id) }}">{{ article.title }}</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}">{{ article.title }}</a>
+                    {% endif %}
+                </b></p>
+                <p style="position:relative;top:-20px;word-break:break-all;">
+                    {{ article.content[0:1500]|striptags|replace("__N__", "<br>")|replace("__S__", "&nbsp;")|safe }}
+                    {% if article.content[1499] %}
+                        <b style="color:#000088">......已省略更多({{ article.content|length }}/1500)</b>
+                    {% endif %}
+                </p>
+            </div>
+            <span class="label label-info" style="font-size:13px;color:#FFFFFF;">
+                发布于{{ article.create_time.strftime('%Y/%m/%d %H:%M:%S') }}
+            </span>
+        </li>
+        {% endfor %}
+    {% else %}
+        <h4 style="color:#444444;">用户没有发表文章</h4>
+    {% endif %}
+</ul>
+{% endblock %}

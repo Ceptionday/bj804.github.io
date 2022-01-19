@@ -1,0 +1,42 @@
+{% extends "blog.html" %}
+
+{% block subtitle %}
+	搜索界面
+{% endblock %}
+
+{% block navbar_content %}
+	<li><a href="/">首页</a></li>
+	<li><a href="{{ url_for('blog') }}">博客专区</a></li>
+	<li><a href="{{ url_for('quick_search_form') }}">快捷方式</a></li>
+    <form class="navbar-form navbar-left" action="{{ url_for('search', pitch_on=0) }}" method="get">
+        <div class="form-group">
+            <input name="q" type="text" class="form-control" placeholder="输入内容">
+        </div>
+        <button type="submit" class="btn btn-default">查找</button>
+    </form>
+{% endblock %}
+
+{% block extra %}
+	<br>
+		<div class="btn-group">
+			<button type="button" class="btn btn-default"
+					onclick="window.location.href='{{ '%s''?q=''%s' | format( url_for('search', pitch_on=0), q) }}'">
+				按标题搜索文章(找到{{ counts[0] }}篇)
+			</button>
+
+			<button type="button" class="btn btn-default"
+					onclick="window.location.href='{{ '%s''?q=''%s' | format( url_for('search', pitch_on=1), q) }}'">
+				按内容搜索文章(找到{{ counts[1] }}篇)
+			</button>
+
+			<script>
+				var buttons =  document.getElementsByClassName("btn-group")[0].getElementsByClassName("btn btn-default");
+				buttons[{{ pitch_on }}].className = "btn btn-primary";
+			</script>
+		</div>
+	{% if pitch_on == "0" and not articles|length %}
+		<h3>未找到标题含有 {{ q }} 的文章</h3>
+	{% elif pitch_on == "1" and not articles|length %}
+		<h3>未找到内容含有 {{ q }} 的文章</h3>
+	{% endif %}
+{% endblock %}

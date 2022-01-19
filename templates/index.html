@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}首页{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1 style="font-family:王汉宗粗楷体简">
+        bj80初一4班の休闲平台
+        <small><i>外部测试</i>版</small>
+    </h1>
+    <center>
+        <h1>可适用于</h1>
+        <h2>班级博客发布</h2>
+        <h6>彩蛋???</h6>
+        <b><h1>本网站已确立等级制度，详情请<i><a href="{{ url_for('level') }}">点击</a></i></h1></b>
+        <h3>欢迎来关注初一四班的公众号“八十中初中部21级4班”与“初弦文学社”</h3>
+        <h3>在此宣传各位有文学比较好又乐于分享的朋友准备的作文可以向初弦文学社投稿</h3>
+    </center>
+</div>
+<h3>目前版本为正式1.0版。如有漏洞可发送邮件至管理员（<i><b>2395319863@qq.com</b></i>），不定期查看</h3>
+<h2>此网站由<i>Cepweb（小？）</i>团队制作，版权归整个团队所有。</h2>
+<h2>后续工程由Ceptionday进行修改与发布</h2>
+
+{% endblock %}

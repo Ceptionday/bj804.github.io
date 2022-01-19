@@ -1,0 +1,13 @@
+{% extends "base04.html" %}
+
+{% block navbar_content %}
+	<li><a href="/">首页</a></li>
+<li><a href="{{ url_for('blog') }}">博客专区</a></li>
+	<li><a href="{{ url_for('quick_search_form') }}">快捷方式</a></li>
+    <form class="navbar-form navbar-left" action="{{ url_for('search', pitch_on=0) }}" method="get">
+        <div class="form-group">
+            <input name="q" type="text" class="form-control" placeholder="输入内容">
+        </div>
+        <button type="submit" class="btn btn-default">查找</button>
+    </form>
+{% endblock %}

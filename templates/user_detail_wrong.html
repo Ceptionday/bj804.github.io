@@ -1,0 +1,21 @@
+{% extends "base04.html" %}
+{% block title %}Personal Data 错误！{% endblock %}
+{% block page_content %}
+<div class="page-header">
+    <img class="img-rounded profile-thumbnail" src="{{ url_for('static',filename='code200.jpg') }}">
+    <div class="profile-header" style="color:#CC0000;">
+        用户名：<b>错误！</b>
+        <br>
+        地址：错误！
+        <br>
+        文章数量：错误！
+        <br>
+        个人简介：错误！
+        </p>
+    </div>
+</div>
+<h3 style="color:#CC0000;">Posts by him:<span style="color:#CC0000;">错误！</span></h3>
+<ul class="posts">
+    <h4 style="color:#CC0000;">文章信息错误！</h4>
+</ul>
+{% endblock %}

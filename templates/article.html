@@ -1,0 +1,31 @@
+{% extends "base03.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}发布文章{% endblock %}
+​
+{% block page_content %}
+<div class="page-header">
+    <h1>发布文章</h1>
+</div>
+
+{% block extra %} {% endblock %}
+<ul class="posts">
+    <div class="btn-group">
+        <button type="button" class="btn btn-default"
+                onclick="window.location.href='{{ url_for('blog') }}'">
+            所有文章
+        </button>
+
+        <button type="button" class="btn btn-default"
+                onclick="window.location.href='{{ url_for('article') }}'">
+            发布文章
+        </button>
+        <script>
+            var buttons = document.getElementsByClassName("articles-blog")[0].getElementsByClassName("btn-default");
+        </script>
+    </div>
+</ul>
+<h3></h3>
+<div class="col-md-4">
+    {{ wtf.quick_form(form) }}
+</div>
+{% endblock %}

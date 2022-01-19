@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block navbar_content %}
+	<li><a href="/">首页</a></li>
+	<li><a href="{{ url_for('blog') }}">博客专区</a></li>
+	<li><a href="{{ url_for('quick_search_form') }}">快捷方式</a></li>
+{% endblock %}

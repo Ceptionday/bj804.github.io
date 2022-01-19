@@ -1,0 +1,47 @@
+{% extends "bootstrap/base.html" %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+{% endblock %}
+
+<title>{% block title %}个人{% endblock %}-主页</title>
+
+{% block navbar %}
+<div class="navbar navbar-inverse" role="navigation" style="max-height:50px;">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" style="font-family:'王汉宗粗楷体简'">bj80四班的小窝</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                {% block navbar_content %}
+                    <li><a href="/">首页</a></li>
+                    <li><a href="{{ url_for('blog') }}">博客专区</a></li>
+                    <li><a href="{{ url_for('quick_search_form') }}">快捷方式</a></li>
+                {% endblock %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if um %}
+                    <li><a href="{{ url_for('user_detail', user_id=um.id) }}"><img style="width:35px;height:35px;position:relative;top:-8px;left:12px;"
+                                         src="{{ url_for('static',filename='code200.jpg') }}"></a></li>
+                    <li><a href="{{ url_for('user_detail', user_id=um.id) }}" style="font-size:17px;">
+                        {{ um.username[0:8] }}{% if um.username[8] %}...{% endif %}</a></li>
+                    <li><a href="{{ url_for('logout') }}">退出登录</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login') }}">登录</a></li>
+                    <li><a href="{{ url_for('register') }}">注册</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% block page_content %}
+
+    {% endblock %}
+</div>
+{% endblock %}
